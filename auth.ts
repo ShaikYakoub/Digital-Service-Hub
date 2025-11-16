@@ -1,10 +1,10 @@
 import NextAuth from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import { db } from "./lib/db" // Node.js-safe
+import { db } from "./lib/db"
 import Credentials from "next-auth/providers/credentials"
 import { compare } from "bcryptjs"
 import { z } from "zod"
-import { authConfig } from "./auth.config" // Import the "lite" rules
+import { authConfig } from "./auth.config" // Import our new rules
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -12,38 +12,17 @@ const loginSchema = z.object({
 })
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  ...authConfig, // 1. Spread the "lite" rules (like the authorized callback)
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
 
-  // 2. Add the Node.js-specific callbacks back in
+  // We import all the callbacks (authorized, jwt, session) from our config
   callbacks: {
-    async jwt({ token }) {
-      if (!token.sub) return token
-
-      const existingUser = await db.user.findUnique({
-        where: { id: token.sub },
-      })
-
-      if (!existingUser) return token
-      token.role = existingUser.role
-      return token
-    },
-    async session({ session, token }) {
-      if (token.role && session.user) {
-        session.user.role = token.role as "ADMIN" | "USER"
-      }
-      return session
-    },
-
-    // 3. We must "merge" this with the authorized callback from authConfig
     ...authConfig.callbacks,
   },
 
   providers: [
     ...authConfig.providers,
     Credentials({
-      // ... (Your existing Credentials provider is perfect) ...
       authorize: async (credentials) => {
         try {
           const validatedFields = loginSchema.safeParse(credentials)
@@ -62,7 +41,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           const passwordsMatch = await compare(password, user.password)
           if (passwordsMatch) {
-            return user
+            // Return the full user object so the JWT callback gets it
+            return user 
           }
           return null
         } catch (error) {

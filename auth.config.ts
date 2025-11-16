@@ -1,26 +1,40 @@
 import type { NextAuthConfig } from "next-auth"
 
-// This is our "rulebook" for the middleware.
-// It has NO DATABASE IMPORTS, so it's "Edge-safe".
-
 export const authConfig = {
-  providers: [], // We'll add providers in the main auth.ts
+  providers: [], 
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      const session = auth
+      const isLoggedIn = !!auth?.user
       const isAdminPage = nextUrl.pathname.startsWith("/admin")
-
-      // 1. If it's an Admin page...
+      
       if (isAdminPage) {
-        // 2. ...and the user is NOT an Admin
-        if (session?.user.role !== "ADMIN") {
-          // 3. ...redirect them to the homepage
+        // 1. Check if user is logged in first
+        if (!isLoggedIn) {
+             return false // Redirects to login
+        }
+        
+        // 2. Check if the user has the ADMIN role
+        // FIXED: We check auth.user.role, not auth.token.role
+        if (auth.user.role !== "ADMIN") {
           return Response.redirect(new URL("/", nextUrl))
         }
       }
-
-      // 4. If it's any other page, allow access
+      
       return true
+    },
+
+    jwt({ token, user }) {
+      if (user) {
+        token.role = user.role
+      }
+      return token
+    },
+    
+    session({ session, token }) {
+      if (token.role && session.user) {
+        session.user.role = token.role as "ADMIN" | "USER"
+      }
+      return session
     },
   },
 } satisfies NextAuthConfig
