@@ -31,9 +31,16 @@ export const authConfig = {
     },
     
     session({ session, token }) {
+      // 1. Add the User ID to the session (CRITICAL FIX)
+      if (token.sub && session.user) {
+        session.user.id = token.sub
+      }
+
+      // 2. Add the Role to the session
       if (token.role && session.user) {
         session.user.role = token.role as "ADMIN" | "USER"
       }
+      
       return session
     },
   },
