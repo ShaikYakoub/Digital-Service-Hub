@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: 'shaikyakoub'
+      POSTGRES_PASSWORD: 'shaikyakoub123'
+      POSTGRES_DB: 'digitalhub'
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./data:/var/lib/postgresql/data
