@@ -3,7 +3,6 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 
 // We can use Zod to validate the title
@@ -13,6 +12,7 @@ const CreateCourseSchema = z.object({
   }),
 });
 
+// This is the export that your page is looking for
 export async function createCourse(formData: FormData) {
   // Check Auth
   const session = await auth();
@@ -28,7 +28,8 @@ export async function createCourse(formData: FormData) {
   });
 
   if (!validatedFields.success) {
-    return { error: "Invalid title" };
+    // Return a more specific error
+    return { error: validatedFields.error.errors[0].message };
   }
 
   const { title } = validatedFields.data;
@@ -52,6 +53,4 @@ export async function createCourse(formData: FormData) {
   } catch (error) {
     return { error: "Database error: Failed to create course." };
   }
-
-  // We DO NOT redirect from the server action anymore
 }
