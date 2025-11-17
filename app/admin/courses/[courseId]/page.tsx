@@ -6,6 +6,7 @@ import { DescriptionForm } from "@/components/admin/course/description-form";
 import { ImageForm } from "@/components/admin/course/image-form";
 import { PriceForm } from "@/components/admin/course/price-form";
 import { ChaptersForm } from "@/components/admin/course/chapters-form";
+import { CoursePublishButton } from "@/components/admin/course/course-publish-button";
 
 export default async function CourseIdPage({
   params
@@ -53,6 +54,10 @@ export default async function CourseIdPage({
             Complete all fields (2/5)
           </span>
         </div>
+        <CoursePublishButton
+          initialData={course}
+          courseId={course.id}
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
