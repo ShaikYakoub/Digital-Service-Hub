@@ -3,6 +3,10 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { ChapterTitleForm } from "@/components/admin/chapter/chapter-title-form";
+import { ChapterDescriptionForm } from "@/components/admin/chapter/chapter-description-form";
+import { ChapterAccessForm } from "@/components/admin/chapter/chapter-access-form";
+import { ChapterVideoForm } from "@/components/admin/chapter/chapter-video-form";
 
 export default async function ChapterIdPage({
   params
@@ -65,10 +69,39 @@ export default async function ChapterIdPage({
               </h2>
             </div>
             {/* We will reuse our TitleForm here! */}
-            <div className="p-4 border bg-slate-100 rounded-md">
-               <p className="text-sm">Title: {chapter.title}</p>
-               {/* Note: We can reuse TitleForm, but we need a new action for chapters */}
+            {/* 2. Add the new component here */}
+            <ChapterTitleForm
+              initialData={chapter}
+              courseId={courseId}
+              chapterId={chapterId}
+            />
+
+            {/* 2. Add the new component here */}
+            <ChapterDescriptionForm
+              initialData={chapter}
+              courseId={courseId}
+              chapterId={chapterId}
+            />
+
+            {/* 2. Add the new Access Form */}
+          <ChapterAccessForm
+            initialData={chapter}
+            courseId={courseId}
+            chapterId={chapterId}
+          />
+
+          {/* Add the Video Form */}
+          <div className="mt-6">
+            <div className="flex items-center gap-x-2">
+              <h2 className="text-xl">
+                Chapter Video
+              </h2>
             </div>
+            <ChapterVideoForm
+              initialData={chapter}
+              courseId={courseId}
+              chapterId={chapterId}
+            />
           </div>
         </div>
         
