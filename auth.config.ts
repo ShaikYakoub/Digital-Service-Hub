@@ -26,8 +26,8 @@ const config: NextAuthConfig = {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as "ADMIN" | "USER";
-        session.user.email = token.email as string | undefined;
-        session.user.name = token.name as string | undefined;
+        session.user.email = (token.email as string) || "";
+        session.user.name = (token.name as string) || "";
       }
       return session;
     },
@@ -65,6 +65,10 @@ const config: NextAuthConfig = {
     Credentials({
       id: "credentials",
       name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
       async authorize() {
         // Placeholder — real logic in API route
         return null;
