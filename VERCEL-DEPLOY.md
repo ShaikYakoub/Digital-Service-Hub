@@ -58,15 +58,29 @@ Make sure your PostgreSQL database is accessible from Vercel. Recommended option
 
 ### Error: Database connection failed
 **Solution**: 
-1. Verify DATABASE_URL is correct
-2. Ensure your database allows connections from Vercel IPs
-3. Check if your database requires SSL (add `?sslmode=require` to connection string)
+1. Verify DATABASE_URL is correct and accessible from Vercel
+2. Ensure your database allows connections from Vercel IPs (or all IPs for hosted databases)
+3. Check if your database requires SSL (add `?sslmode=require` to connection string if needed)
+4. For Vercel Postgres, use the connection string from the Vercel dashboard
+5. Test the connection string locally first
 
 ### Error: NEXTAUTH_SECRET missing
 **Solution**: Generate a secret with: `openssl rand -base64 32` and add to environment variables
 
+### Error: "Something went wrong! An error occurred in the Server Components render"
+**Solutions**:
+1. Check Vercel deployment logs for the actual error
+2. Verify all environment variables are set correctly
+3. Ensure DATABASE_URL is accessible from Vercel
+4. Check that Prisma client generated correctly (look for "prisma generate" in build logs)
+5. Verify AUTH_TRUST_HOST=true is set
+6. Check that NEXTAUTH_URL matches your deployment URL
+
 ### Build fails with module errors
 **Solution**: Clear Vercel build cache and redeploy
+
+### Prisma Client Import Errors
+**Solution**: Make sure the Prisma schema output path matches the import in lib/db.ts. The current setup uses `../lib/generated` as output.
 
 ## Post-Deployment
 

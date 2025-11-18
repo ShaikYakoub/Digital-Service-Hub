@@ -3,7 +3,14 @@ import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 
 export async function Navbar() {
-  const session = await auth();
+  let session = null;
+
+  try {
+    session = await auth();
+  } catch (error) {
+    console.error("Auth error in navbar:", error);
+  }
+
   const isAdmin = session?.user?.role === "ADMIN";
 
   return (

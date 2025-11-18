@@ -3,7 +3,13 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const session = await auth();
+  let session = null;
+
+  try {
+    session = await auth();
+  } catch (error) {
+    console.error("Auth error on home page:", error);
+  }
 
   // Redirect logged-in users to dashboard
   if (session?.user) {

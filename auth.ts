@@ -40,11 +40,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log("🔐 AUTHORIZE START")
-        console.log("Credentials:", JSON.stringify(credentials, null, 2))
+        if (process.env.NODE_ENV === 'development') {
+          console.log("🔐 AUTHORIZE START")
+        }
         
         if (!credentials?.email || !credentials?.password) {
-          console.log("❌ Missing credentials")
+          if (process.env.NODE_ENV === 'development') {
+            console.log("❌ Missing credentials")
+          }
           return null
         }
 
@@ -53,10 +56,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             where: { email: credentials.email as string },
           })
 
-          console.log("User found:", !!user)
+          if (process.env.NODE_ENV === 'development') {
+            console.log("User found:", !!user)
+          }
           
           if (!user?.password) {
-            console.log("❌ No user or password")
+            if (process.env.NODE_ENV === 'development') {
+              console.log("❌ No user or password")
+            }
             return null
           }
 
@@ -65,21 +72,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             user.password
           )
 
-          console.log("Password valid:", isValid)
+          if (process.env.NODE_ENV === 'development') {
+            console.log("Password valid:", isValid)
+          }
 
           if (!isValid) {
-            console.log("❌ Invalid password")
+            if (process.env.NODE_ENV === 'development') {
+              console.log("❌ Invalid password")
+            }
             return null
           }
 
-          console.log("✅ SUCCESS - Returning user")
+          if (process.env.NODE_ENV === 'development') {
+            console.log("✅ SUCCESS - Returning user")
+          }
+          
           const returnUser = {
             id: user.id,
             email: user.email!,
             name: user.name,
             role: user.role,
           }
-          console.log("Return object:", JSON.stringify(returnUser, null, 2))
+          
           return returnUser
         } catch (error) {
           console.error("🚨 AUTHORIZE ERROR:", error)
