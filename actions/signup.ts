@@ -12,38 +12,33 @@ export async function signup(formData: FormData) {
   console.log("Signup attempt for:", email)
 
   if (!name || !email || !password) {
-    return { error: "All fields are required" }
+    throw new Error("All fields are required")
   }
 
-  try {
-    // Check if user already exists
-    const existingUser = await db.user.findUnique({
-      where: { email }
-    })
+  // Check if user already exists
+  const existingUser = await db.user.findUnique({
+    where: { email }
+  })
 
-    if (existingUser) {
-      return { error: "User already exists" }
+  if (existingUser) {
+    throw new Error("User with this email already exists")
+  }
+
+  // Hash password
+  const hashedPassword = await hash(password, 12)
+
+  // Create user
+  await db.user.create({
+    data: {
+      name,
+      email,
+      password: hashedPassword,
+      role: "USER"
     }
+  })
 
-    // Hash password
-    const hashedPassword = await hash(password, 12)
+  console.log("User created successfully:", email)
 
-    // Create user
-    await db.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        role: "USER"
-      }
-    })
-
-    console.log("User created successfully:", email)
-  } catch (error) {
-    console.error("Signup error:", error)
-    return { error: "Failed to create account. Please try again." }
-  }
-
-  // Redirect must be outside try-catch as it throws internally
+  // Redirect to login - this must be the last statement and not in try-catch
   redirect("/auth/login?message=Account created successfully")
 }
