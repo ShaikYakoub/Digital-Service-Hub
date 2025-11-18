@@ -5,24 +5,24 @@ import { db } from "@/lib/db"
 import { redirect } from "next/navigation"
 
 export async function signup(formData: FormData) {
+  const name = formData.get("name") as string
+  const email = formData.get("email") as string
+  const password = formData.get("password") as string
+
+  console.log("Signup attempt for:", email)
+
+  if (!name || !email || !password) {
+    return { error: "All fields are required" }
+  }
+
   try {
-    const name = formData.get("name") as string
-    const email = formData.get("email") as string
-    const password = formData.get("password") as string
-
-    console.log("Signup attempt for:", email)
-
-    if (!name || !email || !password) {
-      throw new Error("All fields are required")
-    }
-
     // Check if user already exists
     const existingUser = await db.user.findUnique({
       where: { email }
     })
 
     if (existingUser) {
-      throw new Error("User already exists")
+      return { error: "User already exists" }
     }
 
     // Hash password
@@ -39,11 +39,11 @@ export async function signup(formData: FormData) {
     })
 
     console.log("User created successfully:", email)
-
-    // Redirect to login
-    redirect("/auth/login?message=Account created successfully")
   } catch (error) {
     console.error("Signup error:", error)
-    throw error
+    return { error: "Failed to create account. Please try again." }
   }
+
+  // Redirect must be outside try-catch as it throws internally
+  redirect("/auth/login?message=Account created successfully")
 }
