@@ -5,6 +5,8 @@ import Link from "next/link";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import ReactPlayer from "react-player";
 
+export const dynamic = "force-dynamic";
+
 export default async function LearnChapterPage({
   params,
 }: {

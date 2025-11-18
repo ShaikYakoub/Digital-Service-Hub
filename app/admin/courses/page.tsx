@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { AdminCourseCard } from "@/components/admin-course-card";
 import { createCourse } from "@/actions/create-course";
 
+export const dynamic = "force-dynamic";
+
 async function getCourses(userId: string) {
   const courses = await db.course.findMany({
     where: {

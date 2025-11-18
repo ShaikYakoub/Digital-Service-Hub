@@ -10,6 +10,8 @@ import { CoursePublishButton } from "@/components/admin/course/course-publish-bu
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 type CourseWithChapters = {
   id: string;
   title: string | null;
