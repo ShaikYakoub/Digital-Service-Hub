@@ -13,9 +13,10 @@ declare var Razorpay: any;
 
 interface BuyButtonProps {
   courseId: string;
+  courseTitle?: string;
 }
 
-export const BuyButton = ({ courseId }: BuyButtonProps) => {
+export const BuyButton = ({ courseId, courseTitle }: BuyButtonProps) => {
   const { data: session } = useSession();
   const [isPending, startTransition] = useTransition();
 
@@ -28,7 +29,7 @@ export const BuyButton = ({ courseId }: BuyButtonProps) => {
           toast.error(response.error);
           return;
         }
-        
+
         const order = response.order;
         if (!order) {
           toast.error("Failed to create order.");
@@ -40,7 +41,9 @@ export const BuyButton = ({ courseId }: BuyButtonProps) => {
           amount: order.amount,
           currency: order.currency,
           name: "Course Purchase",
-          description: "Complete your payment",
+          description: courseTitle
+            ? `Purchase of ${courseTitle}`
+            : "Complete your payment",
           order_id: order.id,
           handler: async function (paymentResponse: any) {
             const verificationResponse = await verifyPayment({
@@ -68,7 +71,6 @@ export const BuyButton = ({ courseId }: BuyButtonProps) => {
 
         const rzp = new Razorpay(options);
         rzp.open();
-
       } catch (error) {
         console.error("Payment failed", error);
         toast.error("Payment failed. Please try again.");
@@ -77,8 +79,8 @@ export const BuyButton = ({ courseId }: BuyButtonProps) => {
   };
 
   return (
-    <Button 
-      onClick={handlePayment} 
+    <Button
+      onClick={handlePayment}
       disabled={isPending}
       className="w-full mt-4"
     >
