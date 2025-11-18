@@ -4,11 +4,46 @@ import { Button } from "@/components/ui/button";
 
 export async function Navbar() {
   let session = null;
+  let authError = false;
 
   try {
     session = await auth();
   } catch (error) {
-    console.error("Auth error in navbar:", error);
+    authError = true;
+    // Only log in development
+    if (process.env.NODE_ENV === "development") {
+      console.error("Auth error in navbar:", error);
+    }
+  }
+
+  // If auth failed during static generation, render minimal navbar
+  if (authError) {
+    return (
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex items-center">
+              <Link
+                href="/"
+                className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors"
+              >
+                Digital Service Hub
+              </Link>
+            </div>
+            <div className="flex items-center space-x-4">
+              <Link href="/browse">
+                <Button variant="ghost" size="sm">
+                  Browse Courses
+                </Button>
+              </Link>
+              <Link href="/auth/login">
+                <Button size="sm">Login</Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </nav>
+    );
   }
 
   const isAdmin = session?.user?.role === "ADMIN";

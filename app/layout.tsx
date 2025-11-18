@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   description: "Learn and master new skills with our comprehensive courses",
 };
 
+// Force dynamic rendering for all pages since we use auth in navbar
+export const dynamic = "force-dynamic";
+
 export default function RootLayout({
   children,
 }: {
