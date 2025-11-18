@@ -6,8 +6,6 @@ import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export const runtime = "nodejs";
-
 function SignupForm() {
   const router = useRouter();
   const [state, formAction] = useFormState<SignupState | null, FormData>(
