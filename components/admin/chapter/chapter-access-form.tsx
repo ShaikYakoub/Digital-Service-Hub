@@ -17,7 +17,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z.object({
-  isFree: z.boolean().optional().default(false),
+  isFree: z.boolean().default(false),
 });
 
 interface ChapterAccessFormProps {
