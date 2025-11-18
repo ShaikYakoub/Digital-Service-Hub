@@ -20,9 +20,11 @@ const formSchema = z.object({
   isFree: z.boolean().default(false),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 interface ChapterAccessFormProps {
   initialData: {
-    isFree?: boolean;
+    isFree: boolean;
   };
   courseId: string;
   chapterId: string;
@@ -35,16 +37,16 @@ export const ChapterAccessForm = ({
 }: ChapterAccessFormProps) => {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema) as any,
     defaultValues: {
-      isFree: !!initialData.isFree,
+      isFree: initialData.isFree ?? false,
     },
   });
 
   const { isSubmitting } = form.formState;
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: FormValues) => {
     try {
       const response = await updateChapter(chapterId, courseId, values);
 

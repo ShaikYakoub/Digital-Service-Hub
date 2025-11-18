@@ -9,7 +9,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:seed": "npx prisma generate && ts-node --project tsconfig.json prisma/seed.ts"
+    "db:seed": "npx prisma generate && ts-node --project tsconfig.json prisma/seed.ts",
+    "typecheck": "tsc --noEmit",
+    "verify": "node check-types.mjs",
+    "check-all": "npm run typecheck && npm run verify"
   },
   "prisma": {
     "seed": "ts-node --project tsconfig.json prisma/seed.ts"
