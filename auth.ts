@@ -1,5 +1,5 @@
 // auth.ts
 import NextAuth from "next-auth";
-import config from "./auth.config";
+import serverConfig from "./auth.config";
 
-export const { handlers, auth, signIn, signOut } = NextAuth(config);
+export const { handlers, auth, signIn, signOut } = NextAuth(serverConfig);
