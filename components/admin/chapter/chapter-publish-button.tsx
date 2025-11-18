@@ -20,7 +20,7 @@ interface ChapterPublishButtonProps {
 export const ChapterPublishButton = ({
   initialData,
   courseId,
-  chapterId
+  chapterId,
 }: ChapterPublishButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -30,11 +30,12 @@ export const ChapterPublishButton = ({
       setIsLoading(true);
       // 2. Call the correct action
       const response = await publishChapter(chapterId, courseId);
-      
+
       if (response?.error) {
         toast.error(response.error);
       } else {
         toast.success("Chapter published");
+        router.push(`/admin/courses/${courseId}`);
         router.refresh();
       }
     } catch {
@@ -42,14 +43,14 @@ export const ChapterPublishButton = ({
     } finally {
       setIsLoading(false);
     }
-  }
-  
+  };
+
   const onUnpublish = async () => {
     try {
       setIsLoading(true);
       // 3. Call the correct action
       const response = await unpublishChapter(chapterId, courseId);
-      
+
       if (response?.error) {
         toast.error(response.error);
       } else {
@@ -61,14 +62,14 @@ export const ChapterPublishButton = ({
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex items-center gap-x-2">
       <Button
         onClick={initialData.isPublished ? onUnpublish : onPublish}
         disabled={isLoading}
-        variant="outline"
+        className="bg-black text-white hover:bg-gray-800"
         size="sm"
       >
         {isLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}

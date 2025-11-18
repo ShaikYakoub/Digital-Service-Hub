@@ -394,8 +394,9 @@ export const ModelName = {
   Account: 'Account',
   Course: 'Course',
   Chapter: 'Chapter',
-  UserProgress: 'UserProgress',
-  Purchase: 'Purchase'
+  Progress: 'Progress',
+  Purchase: 'Purchase',
+  Order: 'Order'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -411,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "course" | "chapter" | "userProgress" | "purchase"
+    modelProps: "user" | "account" | "course" | "chapter" | "progress" | "purchase" | "order"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -711,77 +712,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    UserProgress: {
-      payload: Prisma.$UserProgressPayload<ExtArgs>
-      fields: Prisma.UserProgressFieldRefs
+    Progress: {
+      payload: Prisma.$ProgressPayload<ExtArgs>
+      fields: Prisma.ProgressFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.UserProgressFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload> | null
+          args: Prisma.ProgressFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.UserProgressFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>
+          args: Prisma.ProgressFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressPayload>
         }
         findFirst: {
-          args: Prisma.UserProgressFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload> | null
+          args: Prisma.ProgressFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.UserProgressFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>
+          args: Prisma.ProgressFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressPayload>
         }
         findMany: {
-          args: Prisma.UserProgressFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>[]
+          args: Prisma.ProgressFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressPayload>[]
         }
         create: {
-          args: Prisma.UserProgressCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>
+          args: Prisma.ProgressCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressPayload>
         }
         createMany: {
-          args: Prisma.UserProgressCreateManyArgs<ExtArgs>
+          args: Prisma.ProgressCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.UserProgressCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>[]
+          args: Prisma.ProgressCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressPayload>[]
         }
         delete: {
-          args: Prisma.UserProgressDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>
+          args: Prisma.ProgressDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressPayload>
         }
         update: {
-          args: Prisma.UserProgressUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>
+          args: Prisma.ProgressUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressPayload>
         }
         deleteMany: {
-          args: Prisma.UserProgressDeleteManyArgs<ExtArgs>
+          args: Prisma.ProgressDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.UserProgressUpdateManyArgs<ExtArgs>
+          args: Prisma.ProgressUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.UserProgressUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>[]
+          args: Prisma.ProgressUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressPayload>[]
         }
         upsert: {
-          args: Prisma.UserProgressUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserProgressPayload>
+          args: Prisma.ProgressUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressPayload>
         }
         aggregate: {
-          args: Prisma.UserProgressAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateUserProgress>
+          args: Prisma.ProgressAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProgress>
         }
         groupBy: {
-          args: Prisma.UserProgressGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.UserProgressGroupByOutputType>[]
+          args: Prisma.ProgressGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgressGroupByOutputType>[]
         }
         count: {
-          args: Prisma.UserProgressCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.UserProgressCountAggregateOutputType> | number
+          args: Prisma.ProgressCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgressCountAggregateOutputType> | number
         }
       }
     }
@@ -856,6 +857,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PurchaseCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PurchaseCountAggregateOutputType> | number
+        }
+      }
+    }
+    Order: {
+      payload: Prisma.$OrderPayload<ExtArgs>
+      fields: Prisma.OrderFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OrderFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OrderFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>
+        }
+        findFirst: {
+          args: Prisma.OrderFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OrderFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>
+        }
+        findMany: {
+          args: Prisma.OrderFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>[]
+        }
+        create: {
+          args: Prisma.OrderCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>
+        }
+        createMany: {
+          args: Prisma.OrderCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OrderCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>[]
+        }
+        delete: {
+          args: Prisma.OrderDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>
+        }
+        update: {
+          args: Prisma.OrderUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>
+        }
+        deleteMany: {
+          args: Prisma.OrderDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OrderUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OrderUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>[]
+        }
+        upsert: {
+          args: Prisma.OrderUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>
+        }
+        aggregate: {
+          args: Prisma.OrderAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOrder>
+        }
+        groupBy: {
+          args: Prisma.OrderGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrderGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OrderCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrderCountAggregateOutputType> | number
         }
       }
     }
@@ -962,7 +1037,7 @@ export const ChapterScalarFieldEnum = {
 export type ChapterScalarFieldEnum = (typeof ChapterScalarFieldEnum)[keyof typeof ChapterScalarFieldEnum]
 
 
-export const UserProgressScalarFieldEnum = {
+export const ProgressScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   chapterId: 'chapterId',
@@ -971,7 +1046,7 @@ export const UserProgressScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type UserProgressScalarFieldEnum = (typeof UserProgressScalarFieldEnum)[keyof typeof UserProgressScalarFieldEnum]
+export type ProgressScalarFieldEnum = (typeof ProgressScalarFieldEnum)[keyof typeof ProgressScalarFieldEnum]
 
 
 export const PurchaseScalarFieldEnum = {
@@ -983,6 +1058,18 @@ export const PurchaseScalarFieldEnum = {
 } as const
 
 export type PurchaseScalarFieldEnum = (typeof PurchaseScalarFieldEnum)[keyof typeof PurchaseScalarFieldEnum]
+
+
+export const OrderScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  courseId: 'courseId',
+  amount: 'amount',
+  razorpayOrderId: 'razorpayOrderId',
+  createdAt: 'createdAt'
+} as const
+
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1182,8 +1269,9 @@ export type GlobalOmitConfig = {
   account?: Prisma.AccountOmit
   course?: Prisma.CourseOmit
   chapter?: Prisma.ChapterOmit
-  userProgress?: Prisma.UserProgressOmit
+  progress?: Prisma.ProgressOmit
   purchase?: Prisma.PurchaseOmit
+  order?: Prisma.OrderOmit
 }
 
 /* Types for Logging */

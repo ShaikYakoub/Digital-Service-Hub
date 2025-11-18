@@ -35,7 +35,7 @@ interface DescriptionFormProps {
 
 export const DescriptionForm = ({
   initialData,
-  courseId
+  courseId,
 }: DescriptionFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -45,7 +45,7 @@ export const DescriptionForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData.description || ""
+      description: initialData.description || "",
     },
   });
 
@@ -55,7 +55,7 @@ export const DescriptionForm = ({
     try {
       // We use the *exact same* updateCourse action
       const response = await updateCourse(courseId, values);
-      
+
       if (response.error) {
         toast.error(response.error);
       } else {
@@ -71,25 +71,25 @@ export const DescriptionForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Course description
+        Description
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit description
+              Edit
             </>
           )}
         </Button>
       </div>
-      
+
       {!isEditing && (
         <p className="text-sm mt-2">
           {initialData.description || "No description provided."}
         </p>
       )}
-      
+
       {isEditing && (
         <Form {...form}>
           <form
@@ -113,10 +113,7 @@ export const DescriptionForm = ({
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-              >
+              <Button disabled={!isValid || isSubmitting} type="submit">
                 Save
               </Button>
             </div>

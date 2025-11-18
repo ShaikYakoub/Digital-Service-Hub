@@ -38,12 +38,17 @@ export type Course = Prisma.CourseModel
  */
 export type Chapter = Prisma.ChapterModel
 /**
- * Model UserProgress
+ * Model Progress
  * 
  */
-export type UserProgress = Prisma.UserProgressModel
+export type Progress = Prisma.ProgressModel
 /**
  * Model Purchase
  * 
  */
 export type Purchase = Prisma.PurchaseModel
+/**
+ * Model Order
+ * 
+ */
+export type Order = Prisma.OrderModel

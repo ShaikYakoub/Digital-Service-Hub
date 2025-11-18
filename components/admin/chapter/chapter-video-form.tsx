@@ -7,6 +7,7 @@ import { updateChapter } from "@/actions/update-chapter";
 import { Button } from "@/components/ui/button";
 import { Pencil, PlusCircle, Video } from "lucide-react";
 import { UploadDropzone } from "@/lib/uploadthing";
+import { Progress } from "@/components/ui/progress";
 
 // --- THIS IS THE FIX ---
 import dynamic from "next/dynamic";
@@ -32,6 +33,7 @@ export const ChapterVideoForm = ({
     initialData,
   });
   const [isEditing, setIsEditing] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const router = useRouter();
@@ -45,6 +47,7 @@ export const ChapterVideoForm = ({
       } else {
         toast.success("Chapter video updated");
         toggleEdit();
+        setUploadProgress(0);
         router.refresh();
       }
     } catch {
@@ -67,7 +70,7 @@ export const ChapterVideoForm = ({
           {!isEditing && initialData.videoUrl && (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit video
+              Edit
             </>
           )}
         </Button>
@@ -91,6 +94,14 @@ export const ChapterVideoForm = ({
 
       {isEditing && (
         <div className="mt-4">
+          {uploadProgress > 0 && uploadProgress < 100 && (
+            <div className="mb-4">
+              <Progress value={uploadProgress} className="h-2" />
+              <p className="text-xs text-muted-foreground mt-2">
+                Uploading... {uploadProgress}%
+              </p>
+            </div>
+          )}
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
             <UploadDropzone
               endpoint="courseVideo"
@@ -104,6 +115,7 @@ export const ChapterVideoForm = ({
               onUploadError={(error: Error) => {
                 console.error("UPLOADTHING: Upload failed!", error);
                 toast.error(`Upload Failed: ${error.message}`);
+                setUploadProgress(0);
               }}
               onBeforeUploadBegin={(files) => {
                 console.log("UPLOADTHING: Before upload begin", files);
@@ -112,9 +124,11 @@ export const ChapterVideoForm = ({
               onUploadBegin={(fileName: string) => {
                 console.log("UPLOADTHING: Upload began for file:", fileName);
                 toast.info(`Uploading: ${fileName}`);
+                setUploadProgress(1);
               }}
               onUploadProgress={(progress: number) => {
                 console.log("UPLOADTHING: Upload progress:", progress);
+                setUploadProgress(progress);
               }}
               config={{
                 mode: "auto",

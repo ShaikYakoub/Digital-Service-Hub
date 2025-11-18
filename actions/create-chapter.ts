@@ -66,7 +66,7 @@ export async function createChapter(formData: FormData) {
     });
 
     revalidatePath(`/admin/courses/${courseId}`);
-    return { success: "Chapter created!" };
+    return { success: "Chapter created!", chapterId: chapter.id };
 
   } catch (error) {
     console.log("[CREATE_CHAPTER]", error);

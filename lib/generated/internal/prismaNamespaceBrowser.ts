@@ -53,8 +53,9 @@ export const ModelName = {
   Account: 'Account',
   Course: 'Course',
   Chapter: 'Chapter',
-  UserProgress: 'UserProgress',
-  Purchase: 'Purchase'
+  Progress: 'Progress',
+  Purchase: 'Purchase',
+  Order: 'Order'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -137,7 +138,7 @@ export const ChapterScalarFieldEnum = {
 export type ChapterScalarFieldEnum = (typeof ChapterScalarFieldEnum)[keyof typeof ChapterScalarFieldEnum]
 
 
-export const UserProgressScalarFieldEnum = {
+export const ProgressScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   chapterId: 'chapterId',
@@ -146,7 +147,7 @@ export const UserProgressScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type UserProgressScalarFieldEnum = (typeof UserProgressScalarFieldEnum)[keyof typeof UserProgressScalarFieldEnum]
+export type ProgressScalarFieldEnum = (typeof ProgressScalarFieldEnum)[keyof typeof ProgressScalarFieldEnum]
 
 
 export const PurchaseScalarFieldEnum = {
@@ -158,6 +159,18 @@ export const PurchaseScalarFieldEnum = {
 } as const
 
 export type PurchaseScalarFieldEnum = (typeof PurchaseScalarFieldEnum)[keyof typeof PurchaseScalarFieldEnum]
+
+
+export const OrderScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  courseId: 'courseId',
+  amount: 'amount',
+  razorpayOrderId: 'razorpayOrderId',
+  createdAt: 'createdAt'
+} as const
+
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -38,6 +38,24 @@ export const ourFileRouter = {
       // as our form will handle the DB update
       return { uploadedBy: metadata.userId };
     }),
+  
+  // Define an "uploader" for course images
+  courseImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+    .middleware(() => handleAuth())
+    .onUploadComplete(({ metadata, file }) => {
+      console.log("Image upload complete for userId:", metadata.userId);
+      console.log("Image url:", file.url);
+      return { uploadedBy: metadata.userId };
+    }),
+  
+  // Define an "uploader" for profile images
+  imageUploader: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+    .middleware(() => handleAuth())
+    .onUploadComplete(({ metadata, file }) => {
+      console.log("Profile image upload complete for userId:", metadata.userId);
+      console.log("Profile image url:", file.url);
+      return { uploadedBy: metadata.userId };
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

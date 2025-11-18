@@ -37,7 +37,7 @@ interface ChapterDescriptionFormProps {
 export const ChapterDescriptionForm = ({
   initialData,
   courseId,
-  chapterId
+  chapterId,
 }: ChapterDescriptionFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -47,7 +47,7 @@ export const ChapterDescriptionForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData.description || ""
+      description: initialData.description || "",
     },
   });
 
@@ -56,7 +56,7 @@ export const ChapterDescriptionForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await updateChapter(chapterId, courseId, values);
-      
+
       if (response.error) {
         toast.error(response.error);
       } else {
@@ -79,18 +79,18 @@ export const ChapterDescriptionForm = ({
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit description
+              Edit
             </>
           )}
         </Button>
       </div>
-      
+
       {!isEditing && (
         <p className="text-sm mt-2">
           {initialData.description || "No description provided."}
         </p>
       )}
-      
+
       {isEditing && (
         <Form {...form}>
           <form
@@ -114,10 +114,7 @@ export const ChapterDescriptionForm = ({
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-              >
+              <Button disabled={!isValid || isSubmitting} type="submit">
                 Save
               </Button>
             </div>

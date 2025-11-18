@@ -14,20 +14,20 @@ enum Role {
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String          @unique
+  email         String    @unique
   emailVerified DateTime?
   image         String?
   password      String?
-  role          Role            @default(USER)
+  role          Role      @default(USER)
   
   accounts      Account[]
   purchases     Purchase[]
-  progress      UserProgress[]
+  progress      Progress[] // Renamed from UserProgress
   
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Account {
@@ -51,7 +51,7 @@ model Account {
 
 model Course {
   id          String  @id @default(cuid())
-  userId      String
+  userId      String // Added to know who created the course
   title       String  @db.Text
   description String? @db.Text
   imageUrl    String? @db.Text
@@ -75,9 +75,9 @@ model Chapter {
   isPublished Boolean @default(false)
 
   courseId    String
-  course      Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course      Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
-  userProgress UserProgress[]
+  userProgress Progress[] // Renamed from UserProgress
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -85,17 +85,18 @@ model Chapter {
   @@index([courseId])
 }
 
-model UserProgress {
-  id        String   @id @default(cuid())
-  userId    String
-  chapterId String
-  isCompleted Boolean @default(false)
+// Renamed from UserProgress to be more generic
+model Progress {
+  id          String   @id @default(cuid())
+  userId      String
+  chapterId   String
+  isCompleted Boolean  @default(false)
 
-  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([chapterId])
   @@unique([userId, chapterId])
@@ -112,5 +113,16 @@ model Purchase {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([userId, courseId]) // A user can't buy the same course twice
+  @@unique([userId, courseId])
+}
+
+// New model to track Razorpay orders before they are verified
+model Order {
+  id          String   @id @default(cuid())
+  userId      String
+  courseId    String
+  amount      Float
+  razorpayOrderId String @unique
+
+  createdAt   DateTime @default(now())
 }

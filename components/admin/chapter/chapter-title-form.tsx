@@ -36,7 +36,7 @@ interface ChapterTitleFormProps {
 export const ChapterTitleForm = ({
   initialData,
   courseId,
-  chapterId
+  chapterId,
 }: ChapterTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -54,7 +54,7 @@ export const ChapterTitleForm = ({
     try {
       // Call the new action with the correct IDs
       const response = await updateChapter(chapterId, courseId, values);
-      
+
       if (response.error) {
         toast.error(response.error);
       } else {
@@ -77,18 +77,14 @@ export const ChapterTitleForm = ({
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit title
+              Edit
             </>
           )}
         </Button>
       </div>
-      
-      {!isEditing && (
-        <p className="text-sm mt-2">
-          {initialData.title}
-        </p>
-      )}
-      
+
+      {!isEditing && <p className="text-sm mt-2">{initialData.title}</p>}
+
       {isEditing && (
         <Form {...form}>
           <form
@@ -112,10 +108,7 @@ export const ChapterTitleForm = ({
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-              >
+              <Button disabled={!isValid || isSubmitting} type="submit">
                 Save
               </Button>
             </div>

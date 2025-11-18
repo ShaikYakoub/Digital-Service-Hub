@@ -1,9 +1,9 @@
 "use server";
 
 import { auth } from "@/auth";
-import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { db } from "@/lib/db";
 
 // We can use Zod to validate the title
 const CreateCourseSchema = z.object({
@@ -14,43 +14,42 @@ const CreateCourseSchema = z.object({
 
 // This is the export that your page is looking for
 export async function createCourse(formData: FormData) {
-  // Check Auth
-  const session = await auth();
-  const userId = session?.user?.id;
-
-  if (!userId || session.user.role !== "ADMIN") {
-    return { error: "Unauthorized" };
-  }
-
-  // Validate data
-  const validatedFields = CreateCourseSchema.safeParse({
-    title: formData.get("title"),
-  });
-
-  if (!validatedFields.success) {
-    // Return a more specific error
-    return { error: validatedFields.error.errors[0].message };
-  }
-
-  const { title } = validatedFields.data;
-
-  // Create the course in the Database
-  let course;
   try {
-    course = await db.course.create({
+    // 1. Check Auth
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId || session?.user?.role !== "ADMIN") {
+      return { error: "Unauthorized: You must be an admin to create a course." };
+    }
+
+    // 2. Extract and validate data from FormData
+    const title = formData.get("title") as string;
+
+    const validatedFields = CreateCourseSchema.safeParse({ title });
+
+    if (!validatedFields.success) {
+      return { error: "Invalid fields provided." };
+    }
+
+    const { title: validatedTitle } = validatedFields.data;
+
+    // 3. Create the course in the Database
+    const course = await db.course.create({
       data: {
         userId,
-        title,
+        title: validatedTitle,
       },
     });
 
-    // Revalidate the "courses" page so our new course shows up
+    // 4. Revalidate the "courses" page so our new course shows up
     revalidatePath("/admin/courses");
-    
-    // Return a success message and the new course ID
+
+    // 5. Return a success message and the new course ID
     return { success: "Course created!", courseId: course.id };
-    
+
   } catch (error) {
-    return { error: "Database error: Failed to create course." };
+    console.error("[CREATE_COURSE_ACTION]", error);
+    return { error: "An unexpected database error occurred." };
   }
 }

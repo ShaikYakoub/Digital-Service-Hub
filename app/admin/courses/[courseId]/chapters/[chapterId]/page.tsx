@@ -38,77 +38,79 @@ export default async function ChapterIdPage({
   }
 
   return (
-    <div className="p-6 text-black">
-      {/* Back Button & Publish Button */}
-      <div className="flex items-center justify-between w-full mb-6">
-        <Link
-          href={`/admin/courses/${courseId}`}
-          className="flex items-center text-sm hover:opacity-75 transition"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to course setup
-        </Link>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back Button & Publish Button */}
+        <div className="flex items-center justify-between w-full mb-6">
+          <Link
+            href={`/admin/courses/${courseId}`}
+            className="flex items-center text-sm hover:opacity-75 transition"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to course setup
+          </Link>
 
-        <ChapterPublishButton
-          initialData={chapter}
-          courseId={courseId}
-          chapterId={chapterId}
-        />
-      </div>
-
-      {/* Header */}
-      <div className="flex items-center justify-between w-full">
-        <div className="flex flex-col gap-y-2">
-          <h1 className="text-2xl font-medium">Chapter Creation</h1>
-          <span className="text-sm text-slate-700">Complete all fields</span>
+          <ChapterPublishButton
+            initialData={chapter}
+            courseId={courseId}
+            chapterId={chapterId}
+          />
         </div>
-      </div>
 
-      {/* --- THIS IS THE CORRECTED GRID --- */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
-        {/* Column 1: Title & Description */}
-        <div className="space-y-4">
-          <div>
-            <div className="flex items-center gap-x-2">
-              <h2 className="text-xl">Customize your chapter</h2>
-            </div>
-            <ChapterTitleForm
-              initialData={chapter}
-              courseId={courseId}
-              chapterId={chapterId}
-            />
-            <ChapterDescriptionForm
-              initialData={chapter}
-              courseId={courseId}
-              chapterId={chapterId}
-            />
+        {/* Header */}
+        <div className="flex items-center justify-between w-full">
+          <div className="flex flex-col gap-y-2">
+            <h1 className="text-2xl font-medium">Chapter Creation</h1>
+            <span className="text-sm text-slate-700">Complete all fields</span>
           </div>
         </div>
 
-        {/* Column 2: Access & Video */}
-        <div className="space-y-4">
-          <div>
-            <div className="flex items-center gap-x-2">
-              <h2 className="text-xl">Access Settings</h2>
+        {/* --- THIS IS THE CORRECTED GRID --- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+          {/* Column 1: Title & Description */}
+          <div className="space-y-4">
+            <div>
+              <div className="flex items-center gap-x-2">
+                <h2 className="text-xl">Customize your chapter</h2>
+              </div>
+              <ChapterTitleForm
+                initialData={chapter}
+                courseId={courseId}
+                chapterId={chapterId}
+              />
+              <ChapterDescriptionForm
+                initialData={chapter}
+                courseId={courseId}
+                chapterId={chapterId}
+              />
             </div>
-            <ChapterAccessForm
-              initialData={chapter}
-              courseId={courseId}
-              chapterId={chapterId}
-            />
           </div>
-          <div>
-            <div className="flex items-center gap-x-2">
-              <h2 className="text-xl">Chapter Video</h2>
+
+          {/* Column 2: Access & Video */}
+          <div className="space-y-4">
+            <div>
+              <div className="flex items-center gap-x-2">
+                <h2 className="text-xl">Access Settings</h2>
+              </div>
+              <ChapterAccessForm
+                initialData={chapter}
+                courseId={courseId}
+                chapterId={chapterId}
+              />
             </div>
-            <ChapterVideoForm
-              initialData={chapter}
-              courseId={courseId}
-              chapterId={chapterId}
-            />
+            <div>
+              <div className="flex items-center gap-x-2">
+                <h2 className="text-xl">Chapter Video</h2>
+              </div>
+              <ChapterVideoForm
+                initialData={chapter}
+                courseId={courseId}
+                chapterId={chapterId}
+              />
+            </div>
           </div>
+          {/* --- END OF CORRECTED GRID --- */}
         </div>
-        {/* --- END OF CORRECTED GRID --- */}
       </div>
     </div>
   );

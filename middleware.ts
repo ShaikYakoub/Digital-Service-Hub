@@ -1,9 +1,20 @@
-import NextAuth from "next-auth"
-import { authConfig } from "./auth.config" // Import our new rules
+import { auth } from "@/auth"
 
-export default NextAuth(authConfig).auth
+export default auth((req) => {
+  const isLoggedIn = !!req.auth
+  const { pathname } = req.nextUrl
 
-// This config is the same as before
+  if (pathname.startsWith("/admin")) {
+    if (!isLoggedIn) {
+      return Response.redirect(new URL("/auth/login", req.url))
+    }
+    if (req.auth?.user?.role !== "ADMIN") {
+      return Response.redirect(new URL("/", req.url))
+    }
+  }
+})
+
 export const config = {
   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  runtime: 'nodejs',
 }

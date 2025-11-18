@@ -257,7 +257,7 @@ export type ChapterWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Chapter"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Chapter"> | Date | string
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
-  userProgress?: Prisma.UserProgressListRelationFilter
+  userProgress?: Prisma.ProgressListRelationFilter
 }
 
 export type ChapterOrderByWithRelationInput = {
@@ -272,7 +272,7 @@ export type ChapterOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   course?: Prisma.CourseOrderByWithRelationInput
-  userProgress?: Prisma.UserProgressOrderByRelationAggregateInput
+  userProgress?: Prisma.ProgressOrderByRelationAggregateInput
 }
 
 export type ChapterWhereUniqueInput = Prisma.AtLeast<{
@@ -290,7 +290,7 @@ export type ChapterWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Chapter"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Chapter"> | Date | string
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
-  userProgress?: Prisma.UserProgressListRelationFilter
+  userProgress?: Prisma.ProgressListRelationFilter
 }, "id">
 
 export type ChapterOrderByWithAggregationInput = {
@@ -338,7 +338,7 @@ export type ChapterCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   course: Prisma.CourseCreateNestedOneWithoutChaptersInput
-  userProgress?: Prisma.UserProgressCreateNestedManyWithoutChapterInput
+  userProgress?: Prisma.ProgressCreateNestedManyWithoutChapterInput
 }
 
 export type ChapterUncheckedCreateInput = {
@@ -352,7 +352,7 @@ export type ChapterUncheckedCreateInput = {
   courseId: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  userProgress?: Prisma.UserProgressUncheckedCreateNestedManyWithoutChapterInput
+  userProgress?: Prisma.ProgressUncheckedCreateNestedManyWithoutChapterInput
 }
 
 export type ChapterUpdateInput = {
@@ -366,7 +366,7 @@ export type ChapterUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   course?: Prisma.CourseUpdateOneRequiredWithoutChaptersNestedInput
-  userProgress?: Prisma.UserProgressUpdateManyWithoutChapterNestedInput
+  userProgress?: Prisma.ProgressUpdateManyWithoutChapterNestedInput
 }
 
 export type ChapterUncheckedUpdateInput = {
@@ -380,7 +380,7 @@ export type ChapterUncheckedUpdateInput = {
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userProgress?: Prisma.UserProgressUncheckedUpdateManyWithoutChapterNestedInput
+  userProgress?: Prisma.ProgressUncheckedUpdateManyWithoutChapterNestedInput
 }
 
 export type ChapterCreateManyInput = {
@@ -557,7 +557,7 @@ export type ChapterCreateWithoutCourseInput = {
   isPublished?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  userProgress?: Prisma.UserProgressCreateNestedManyWithoutChapterInput
+  userProgress?: Prisma.ProgressCreateNestedManyWithoutChapterInput
 }
 
 export type ChapterUncheckedCreateWithoutCourseInput = {
@@ -570,7 +570,7 @@ export type ChapterUncheckedCreateWithoutCourseInput = {
   isPublished?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  userProgress?: Prisma.UserProgressUncheckedCreateNestedManyWithoutChapterInput
+  userProgress?: Prisma.ProgressUncheckedCreateNestedManyWithoutChapterInput
 }
 
 export type ChapterCreateOrConnectWithoutCourseInput = {
@@ -705,7 +705,7 @@ export type ChapterUpdateWithoutCourseInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userProgress?: Prisma.UserProgressUpdateManyWithoutChapterNestedInput
+  userProgress?: Prisma.ProgressUpdateManyWithoutChapterNestedInput
 }
 
 export type ChapterUncheckedUpdateWithoutCourseInput = {
@@ -718,7 +718,7 @@ export type ChapterUncheckedUpdateWithoutCourseInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userProgress?: Prisma.UserProgressUncheckedUpdateManyWithoutChapterNestedInput
+  userProgress?: Prisma.ProgressUncheckedUpdateManyWithoutChapterNestedInput
 }
 
 export type ChapterUncheckedUpdateManyWithoutCourseInput = {
@@ -760,7 +760,7 @@ export type ChapterCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
  * ChapterCountOutputType without action
  */
 export type ChapterCountOutputTypeCountUserProgressArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.UserProgressWhereInput
+  where?: Prisma.ProgressWhereInput
 }
 
 
@@ -838,7 +838,7 @@ export type $ChapterPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Chapter"
   objects: {
     course: Prisma.$CoursePayload<ExtArgs>
-    userProgress: Prisma.$UserProgressPayload<ExtArgs>[]
+    userProgress: Prisma.$ProgressPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1246,7 +1246,7 @@ readonly fields: ChapterFieldRefs;
 export interface Prisma__ChapterClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   course<T extends Prisma.CourseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CourseDefaultArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  userProgress<T extends Prisma.Chapter$userProgressArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chapter$userProgressArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userProgress<T extends Prisma.Chapter$userProgressArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chapter$userProgressArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1686,23 +1686,23 @@ export type ChapterDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
  */
 export type Chapter$userProgressArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UserProgress
+   * Select specific fields to fetch from the Progress
    */
-  select?: Prisma.UserProgressSelect<ExtArgs> | null
+  select?: Prisma.ProgressSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the UserProgress
+   * Omit specific fields from the Progress
    */
-  omit?: Prisma.UserProgressOmit<ExtArgs> | null
+  omit?: Prisma.ProgressOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserProgressInclude<ExtArgs> | null
-  where?: Prisma.UserProgressWhereInput
-  orderBy?: Prisma.UserProgressOrderByWithRelationInput | Prisma.UserProgressOrderByWithRelationInput[]
-  cursor?: Prisma.UserProgressWhereUniqueInput
+  include?: Prisma.ProgressInclude<ExtArgs> | null
+  where?: Prisma.ProgressWhereInput
+  orderBy?: Prisma.ProgressOrderByWithRelationInput | Prisma.ProgressOrderByWithRelationInput[]
+  cursor?: Prisma.ProgressWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.UserProgressScalarFieldEnum | Prisma.UserProgressScalarFieldEnum[]
+  distinct?: Prisma.ProgressScalarFieldEnum | Prisma.ProgressScalarFieldEnum[]
 }
 
 /**

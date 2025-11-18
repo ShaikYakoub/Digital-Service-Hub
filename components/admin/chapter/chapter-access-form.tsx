@@ -3,11 +3,9 @@
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { updateChapter } from "@/actions/update-chapter";
-import { cn } from "@/lib/utils"; // We'll need this for conditional styling
 
 import {
   Form,
@@ -16,17 +14,15 @@ import {
   FormField,
   FormItem,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox"; // New component!
+import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z.object({
-  isFree: z.boolean().default(false),
+  isFree: z.boolean().optional().default(false),
 });
 
 interface ChapterAccessFormProps {
   initialData: {
-    isFree: boolean;
+    isFree?: boolean;
   };
   courseId: string;
   chapterId: string;
@@ -35,32 +31,31 @@ interface ChapterAccessFormProps {
 export const ChapterAccessForm = ({
   initialData,
   courseId,
-  chapterId
+  chapterId,
 }: ChapterAccessFormProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const toggleEdit = () => setIsEditing((current) => !current);
-
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // Ensure we always have a boolean, even if DB is null
-      isFree: !!initialData.isFree 
+      isFree: !!initialData.isFree,
     },
   });
 
-  const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await updateChapter(chapterId, courseId, values);
-      
+
       if (response.error) {
         toast.error(response.error);
       } else {
-        toast.success("Chapter access updated");
-        toggleEdit();
+        toast.success(
+          values.isFree
+            ? "Chapter is now free for preview"
+            : "Chapter is now premium"
+        );
         router.refresh();
       }
     } catch {
@@ -70,67 +65,34 @@ export const ChapterAccessForm = ({
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        Chapter access
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>Cancel</>
-          ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit access
-            </>
+      <div className="font-medium mb-4">Free for preview</div>
+
+      <Form {...form}>
+        <FormField
+          control={form.control}
+          name="isFree"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={(checked) => {
+                    field.onChange(checked);
+                    // Auto-submit on change
+                    onSubmit({ isFree: checked as boolean });
+                  }}
+                  disabled={isSubmitting}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormDescription>
+                  Check this box to make this chapter free for preview
+                </FormDescription>
+              </div>
+            </FormItem>
           )}
-        </Button>
-      </div>
-      
-      {!isEditing && (
-        <p className={cn(
-          "text-sm mt-2",
-          !initialData.isFree && "text-slate-500 italic"
-        )}>
-          {initialData.isFree 
-            ? "This chapter is free for preview." 
-            : "This chapter is not free."}
-        </p>
-      )}
-      
-      {isEditing && (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
-          >
-            <FormField
-              control={form.control}
-              name="isFree"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormDescription>
-                      Check this box if you want to make this chapter free for preview
-                    </FormDescription>
-                  </div>
-                </FormItem>
-              )}
-            />
-            <div className="flex items-center gap-x-2">
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-              >
-                Save
-              </Button>
-            </div>
-          </form>
-        </Form>
-      )}
+        />
+      </Form>
     </div>
   );
 };

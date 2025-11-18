@@ -18,7 +18,7 @@ interface CoursePublishButtonProps {
 
 export const CoursePublishButton = ({
   initialData,
-  courseId
+  courseId,
 }: CoursePublishButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -27,11 +27,12 @@ export const CoursePublishButton = ({
     try {
       setIsLoading(true);
       const response = await publishCourse(courseId);
-      
+
       if (response?.error) {
         toast.error(response.error);
       } else {
         toast.success("Course published");
+        router.push("/admin/courses");
         router.refresh();
       }
     } catch {
@@ -39,13 +40,13 @@ export const CoursePublishButton = ({
     } finally {
       setIsLoading(false);
     }
-  }
-  
+  };
+
   const onUnpublish = async () => {
     try {
       setIsLoading(true);
       const response = await unpublishCourse(courseId);
-      
+
       if (response?.error) {
         toast.error(response.error);
       } else {
@@ -57,14 +58,14 @@ export const CoursePublishButton = ({
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex items-center gap-x-2">
       <Button
         onClick={initialData.isPublished ? onUnpublish : onPublish}
         disabled={isLoading}
-        variant="outline"
+        className="bg-black text-white hover:bg-gray-800"
         size="sm"
       >
         {isLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
