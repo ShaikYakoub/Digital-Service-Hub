@@ -1,5 +1,4 @@
 import NextAuth from "next-auth"
-import { db } from "./lib/db"
 import Credentials from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 
@@ -52,6 +51,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
 
         try {
+          // Import db here to avoid pulling it into Edge runtime for middleware
+          const { db } = await import("./lib/db")
+          
           const user = await db.user.findUnique({
             where: { email: credentials.email as string },
           })

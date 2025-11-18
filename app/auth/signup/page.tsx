@@ -3,6 +3,8 @@ import { hash } from "bcryptjs";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
+export const runtime = "nodejs";
+
 async function signup(formData: FormData) {
   "use server";
   const name = formData.get("name") as string;

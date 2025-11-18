@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { BookOpen, DollarSign, Users, TrendingUp } from "lucide-react";
 
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {

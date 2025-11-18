@@ -9,6 +9,7 @@ import { ChapterAccessForm } from "@/components/admin/chapter/chapter-access-for
 import { ChapterVideoForm } from "@/components/admin/chapter/chapter-video-form";
 import { ChapterPublishButton } from "@/components/admin/chapter/chapter-publish-button";
 
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export default async function ChapterIdPage({
