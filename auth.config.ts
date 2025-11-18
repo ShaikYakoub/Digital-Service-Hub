@@ -107,3 +107,4 @@ const serverConfig: NextAuthConfig = {
 };
 
 export default serverConfig;
+export { baseConfig };

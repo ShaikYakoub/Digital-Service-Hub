@@ -20,30 +20,35 @@ export async function signup(prevState: SignupState | null, formData: FormData):
     return { error: "All fields are required" }
   }
 
-  // Check if user already exists
-  const existingUser = await db.user.findUnique({
-    where: { email }
-  })
+  try {
+    // Check if user already exists
+    const existingUser = await db.user.findUnique({
+      where: { email }
+    })
 
-  if (existingUser) {
-    return { error: "User with this email already exists" }
-  }
-
-  // Hash password
-  const hashedPassword = await hash(password, 12)
-
-  // Create user
-  await db.user.create({
-    data: {
-      name,
-      email,
-      password: hashedPassword,
-      role: "USER"
+    if (existingUser) {
+      return { error: "User with this email already exists" }
     }
-  })
 
-  console.log("User created successfully:", email)
+    // Hash password
+    const hashedPassword = await hash(password, 12)
 
-  // Redirect to login page
-  redirect("/auth/login?message=Account created successfully")
+    // Create user
+    await db.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role: "USER"
+      }
+    })
+
+    console.log("User created successfully:", email)
+
+    // Return success state instead of redirecting
+    return { success: true }
+  } catch (error) {
+    console.error("Signup error:", error)
+    return { error: "Failed to create account. Please try again." }
+  }
 }

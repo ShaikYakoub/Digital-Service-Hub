@@ -3,14 +3,23 @@
 import Link from "next/link";
 import { signup, SignupState } from "@/actions/signup";
 import { useFormState } from "react-dom";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export const runtime = "nodejs";
 
 function SignupForm() {
+  const router = useRouter();
   const [state, formAction] = useFormState<SignupState | null, FormData>(
     signup,
     null
   );
+
+  useEffect(() => {
+    if (state?.success) {
+      router.push("/auth/login?message=Account created successfully");
+    }
+  }, [state?.success, router]);
 
   return (
     <>
