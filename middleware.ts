@@ -6,7 +6,6 @@ export default auth((req) => {
   const session = req.auth
   const isLoggedIn = !!session
 
-  // Public routes
   const publicRoutes = [
     "/",
     "/auth/login",
@@ -18,7 +17,6 @@ export default auth((req) => {
   )
   if (isPublic) return NextResponse.next()
 
-  // Admin routes
   if (pathname.startsWith("/admin")) {
     if (!isLoggedIn) {
       const loginUrl = new URL("/auth/login", req.url)
@@ -30,12 +28,10 @@ export default auth((req) => {
     }
   }
 
-  // Protected user routes
   const protectedRoutes = ["/dashboard", "/profile", "/learn"]
   const isProtected = protectedRoutes.some((route) =>
     pathname.startsWith(route)
   )
-
   if (isProtected && !isLoggedIn) {
     const loginUrl = new URL("/auth/login", req.url)
     loginUrl.searchParams.set("callbackUrl", pathname)
