@@ -1,7 +1,3 @@
-export { auth as middleware } from "@/auth"
+import { auth } from "@/auth";
 
-export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\..*|api/webhooks).*)",
-  ],
-}
+export default auth;
