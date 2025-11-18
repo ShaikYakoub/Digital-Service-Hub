@@ -25,7 +25,7 @@ const formSchema = z.object({
   price: z.coerce.number().min(0, {
     message: "Price must be a positive number",
   }),
-}) as z.ZodType<{ price: number }>;
+});
 
 interface PriceFormProps {
   initialData: {
@@ -48,7 +48,7 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
 
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       price: initialData.price || 0,
