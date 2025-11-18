@@ -2,11 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: false,
+  serverExternalPackages: ['@prisma/client', 'bcryptjs'],
   experimental: {
     serverActions: {
       bodySizeLimit: "2mb",
     },
-    serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs'],
   },
   // Configure source maps for better debugging
   productionBrowserSourceMaps: false,
