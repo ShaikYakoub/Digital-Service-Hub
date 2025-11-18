@@ -1,7 +1,68 @@
+"use client";
+
 import Link from "next/link";
-import { signup } from "@/actions/signup";
+import { signup, SignupState } from "@/actions/signup";
+import { useFormState } from "react-dom";
 
 export const runtime = "nodejs";
+
+function SignupForm() {
+  const [state, formAction] = useFormState<SignupState | null, FormData>(
+    signup,
+    null
+  );
+
+  return (
+    <>
+      {state?.error && (
+        <div className="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+          {state.error}
+        </div>
+      )}
+
+      {/* Signup Form */}
+      <form action={formAction} className="flex flex-col gap-4">
+        <label className="flex flex-col gap-2">
+          <span className="text-sm font-medium">Full Name</span>
+          <input
+            name="name"
+            type="text"
+            placeholder="Your full name"
+            className="rounded border p-2"
+            required
+          />
+        </label>
+
+        <label className="flex flex-col gap-2">
+          <span className="text-sm font-medium">Email</span>
+          <input
+            name="email"
+            type="email"
+            placeholder="your@email.com"
+            className="rounded border p-2"
+            required
+          />
+        </label>
+
+        <label className="flex flex-col gap-2">
+          <span className="text-sm font-medium">Password</span>
+          <input
+            name="password"
+            type="password"
+            placeholder="Create a password"
+            className="rounded border p-2"
+            required
+            minLength={6}
+          />
+        </label>
+
+        <button className="rounded bg-black p-2 text-white hover:bg-gray-800">
+          Create Account
+        </button>
+      </form>
+    </>
+  );
+}
 
 export default function SignupPage() {
   return (
@@ -61,46 +122,7 @@ export default function SignupPage() {
             </div>
           </div>
 
-          {/* Signup Form */}
-          <form action={signup} className="flex flex-col gap-4">
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium">Full Name</span>
-              <input
-                name="name"
-                type="text"
-                placeholder="Your full name"
-                className="rounded border p-2"
-                required
-              />
-            </label>
-
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium">Email</span>
-              <input
-                name="email"
-                type="email"
-                placeholder="your@email.com"
-                className="rounded border p-2"
-                required
-              />
-            </label>
-
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium">Password</span>
-              <input
-                name="password"
-                type="password"
-                placeholder="Create a password"
-                className="rounded border p-2"
-                required
-                minLength={6}
-              />
-            </label>
-
-            <button className="rounded bg-black p-2 text-white hover:bg-gray-800">
-              Create Account
-            </button>
-          </form>
+          <SignupForm />
 
           <div className="text-center text-sm">
             Already have an account?{" "}
