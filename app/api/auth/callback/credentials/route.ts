@@ -7,12 +7,16 @@ export const runtime = "nodejs";
 
 export const POST = NextAuth({
   ...config,
-  providers: config.providers.map((provider) => {
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  providers: config.providers.map((provider: any) => {
     if (provider.id !== "credentials") return provider;
 
     return {
       ...provider,
-      authorize: async (credentials) => {
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      authorize: async (credentials: any) => {
         if (!credentials?.email || !credentials?.password) return null;
 
         const user = await db.user.findUnique({
@@ -30,7 +34,7 @@ export const POST = NextAuth({
 
         return {
           id: user.id,
-          email: user.email!,
+          email: user.email ?? undefined,
           name: user.name ?? undefined,
           role: user.role,
         };
