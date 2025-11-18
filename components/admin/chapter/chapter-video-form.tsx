@@ -87,7 +87,7 @@ export const ChapterVideoForm = ({
         ) : (
           <div className="relative aspect-video mt-2">
             <ReactPlayer
-              url={initialData.videoUrl!}
+              src={initialData.videoUrl!}
               controls={true}
               width="100%"
               height="100%"
