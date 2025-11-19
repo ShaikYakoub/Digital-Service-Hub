@@ -1,0 +1,48 @@
+<svg
+  width="32"
+  height="32"
+  viewBox="0 0 32 32"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Rounded square hub -->
+  <rect
+    x="4"
+    y="4"
+    width="24"
+    height="24"
+    rx="6"
+    ry="6"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+  />
+
+  <!-- Book / card -->
+  <rect
+    x="9"
+    y="10"
+    width="14"
+    height="12"
+    rx="1.5"
+    ry="1.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+  />
+
+  <!-- Book spine -->
+  <line
+    x1="12"
+    y1="10"
+    x2="12"
+    y2="22"
+    stroke="currentColor"
+    stroke-width="1.4"
+  />
+
+  <!-- Play button -->
+  <polygon
+    points="15,12.5 20,16 15,19.5"
+    fill="currentColor"
+  />
+</svg>

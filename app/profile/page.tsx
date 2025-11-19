@@ -12,7 +12,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, Upload, Camera } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Upload,
+  Camera,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import { toast } from "sonner";
 import { updateProfile, updatePassword } from "@/actions/update-profile";
 import { UploadButton } from "@/lib/uploadthing";
@@ -24,6 +31,7 @@ export default function ProfilePage() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showSecuritySection, setShowSecuritySection] = useState(false);
   const [profileImage, setProfileImage] = useState(session?.user?.image || "");
 
   const user = session?.user;
@@ -72,6 +80,7 @@ export default function ProfilePage() {
         toast.success("Password changed successfully!");
         // Reset form
         (formData as any).target?.reset();
+        setShowSecuritySection(false);
       } else {
         toast.error(result.error || "Failed to change password");
       }
@@ -80,6 +89,22 @@ export default function ProfilePage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleImageUpload = (url: string) => {
+    setProfileImage(url);
+    // Auto-save the profile image
+    const formData = new FormData();
+    formData.append("image", url);
+    formData.append("name", user.name || "");
+    updateProfile(formData).then((result) => {
+      if (result.success) {
+        toast.success("Profile image updated!");
+        update();
+      } else {
+        toast.error("Failed to update image");
+      }
+    });
   };
 
   return (
@@ -130,8 +155,7 @@ export default function ProfilePage() {
                   endpoint="imageUploader"
                   onClientUploadComplete={(res) => {
                     if (res?.[0]?.url) {
-                      setProfileImage(res[0].url);
-                      toast.success("Image uploaded!");
+                      handleImageUpload(res[0].url);
                     }
                   }}
                   onUploadError={(error: Error) => {
@@ -139,7 +163,7 @@ export default function ProfilePage() {
                   }}
                   appearance={{
                     button:
-                      "bg-blue-600 text-white px-4 py-2 text-sm rounded-md hover:bg-blue-700 ut-uploading:cursor-not-allowed ut-uploading:bg-blue-400",
+                      "bg-black text-white px-4 py-2 text-sm rounded-md hover:bg-gray-800 ut-uploading:cursor-not-allowed ut-uploading:bg-gray-400",
                     container: "w-full flex justify-center",
                     allowedContent: "hidden",
                   }}
@@ -171,7 +195,11 @@ export default function ProfilePage() {
                   </p>
                 </div>
 
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Button
+                  type="submit"
+                  className="w-full bg-black hover:bg-gray-800"
+                  disabled={isLoading}
+                >
                   {isLoading ? "Saving..." : "Save Changes"}
                 </Button>
               </form>
@@ -202,119 +230,132 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              <div className="pt-4 border-t">
-                <h4 className="font-semibold mb-2">Account Type</h4>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">
-                    {user.role === "ADMIN" ? "Administrator" : "Student"}
-                  </span>
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      user.role === "ADMIN"
-                        ? "bg-purple-100 text-purple-800"
-                        : "bg-blue-100 text-blue-800"
-                    }`}
-                  >
-                    {user.role === "ADMIN" ? "Admin" : "Student"}
-                  </span>
+              {/* Only show account type for admins */}
+              {user.role === "ADMIN" && (
+                <div className="pt-4 border-t">
+                  <h4 className="font-semibold mb-2">Account Type</h4>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600">Administrator</span>
+                    <span className="px-2 py-1 rounded-full text-xs bg-purple-100 text-purple-800">
+                      Admin
+                    </span>
+                  </div>
                 </div>
-              </div>
+              )}
             </CardContent>
           </Card>
         </div>
 
-        {/* Security Settings */}
+        {/* Security Settings - Collapsible */}
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle>Security</CardTitle>
-            <CardDescription>
-              Manage your password and security preferences
-            </CardDescription>
+            <div
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() => setShowSecuritySection(!showSecuritySection)}
+            >
+              <div>
+                <CardTitle>Security</CardTitle>
+                <CardDescription>
+                  Manage your password and security preferences
+                </CardDescription>
+              </div>
+              {showSecuritySection ? (
+                <ChevronUp className="h-5 w-5 text-gray-500" />
+              ) : (
+                <ChevronDown className="h-5 w-5 text-gray-500" />
+              )}
+            </div>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <form action={handleChangePassword} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="current-password">Current Password</Label>
-                <div className="relative">
-                  <Input
-                    id="current-password"
-                    name="current-password"
-                    type={showCurrentPassword ? "text" : "password"}
-                    placeholder="Enter current password"
-                    className="pr-10"
-                  />
-                  <button
-                    type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                  >
-                    {showCurrentPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
-                    )}
-                  </button>
+          {showSecuritySection && (
+            <CardContent className="space-y-4">
+              <form action={handleChangePassword} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="current-password">Current Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="current-password"
+                      name="current-password"
+                      type={showCurrentPassword ? "text" : "password"}
+                      placeholder="Enter current password"
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      onClick={() =>
+                        setShowCurrentPassword(!showCurrentPassword)
+                      }
+                    >
+                      {showCurrentPassword ? (
+                        <EyeOff className="h-4 w-4 text-gray-400" />
+                      ) : (
+                        <Eye className="h-4 w-4 text-gray-400" />
+                      )}
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="new-password">New Password</Label>
-                <div className="relative">
-                  <Input
-                    id="new-password"
-                    name="new-password"
-                    type={showNewPassword ? "text" : "password"}
-                    placeholder="Enter new password"
-                    className="pr-10"
-                  />
-                  <button
-                    type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    onClick={() => setShowNewPassword(!showNewPassword)}
-                  >
-                    {showNewPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
-                    )}
-                  </button>
+                <div className="space-y-2">
+                  <Label htmlFor="new-password">New Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="new-password"
+                      name="new-password"
+                      type={showNewPassword ? "text" : "password"}
+                      placeholder="Enter new password"
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                    >
+                      {showNewPassword ? (
+                        <EyeOff className="h-4 w-4 text-gray-400" />
+                      ) : (
+                        <Eye className="h-4 w-4 text-gray-400" />
+                      )}
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="confirm-password">Confirm New Password</Label>
-                <div className="relative">
-                  <Input
-                    id="confirm-password"
-                    name="confirm-password"
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Confirm new password"
-                    className="pr-10"
-                  />
-                  <button
-                    type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
-                    )}
-                  </button>
+                <div className="space-y-2">
+                  <Label htmlFor="confirm-password">Confirm New Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="confirm-password"
+                      name="confirm-password"
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Confirm new password"
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-4 w-4 text-gray-400" />
+                      ) : (
+                        <Eye className="h-4 w-4 text-gray-400" />
+                      )}
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <Button
-                type="submit"
-                variant="outline"
-                className="w-full"
-                disabled={isLoading}
-              >
-                {isLoading ? "Changing..." : "Change Password"}
-              </Button>
-            </form>
-          </CardContent>
+                <Button
+                  type="submit"
+                  variant="outline"
+                  className="w-full"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Changing..." : "Change Password"}
+                </Button>
+              </form>
+            </CardContent>
+          )}
         </Card>
       </div>
     </div>

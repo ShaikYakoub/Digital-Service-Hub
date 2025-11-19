@@ -111,7 +111,7 @@ function BrowseContent() {
                 <Input
                   placeholder="Search courses..."
                   defaultValue={search}
-                  className="pl-10"
+                  className="pl-10 focus-visible:ring-black"
                   name="search"
                 />
               </div>
@@ -122,7 +122,7 @@ function BrowseContent() {
               <select
                 defaultValue={sort}
                 name="sort"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
               >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
@@ -137,7 +137,7 @@ function BrowseContent() {
               <select
                 defaultValue={category}
                 name="category"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
               >
                 <option value="all">All Categories</option>
                 {categories.slice(1).map((cat) => (
@@ -149,7 +149,10 @@ function BrowseContent() {
             </div>
 
             {/* Apply Filters Button */}
-            <Button type="submit" className="w-full md:w-auto">
+            <Button
+              type="submit"
+              className="w-full md:w-auto bg-black hover:bg-gray-800"
+            >
               <Filter className="h-4 w-4 mr-2" />
               Apply Filters
             </Button>
