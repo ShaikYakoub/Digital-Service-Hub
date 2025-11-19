@@ -9,7 +9,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
     console.log(`Attempting to send password reset email to: ${email}`);
 
     const result = await resend.emails.send({
-      from: "noreply@digital-service-hub.com", // Use a more professional from address
+      from: "noreply@alkaaara.resend.app", // Use a more professional from address
       to: email,
       subject: "Reset your password",
       html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`
