@@ -3,7 +3,7 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendPasswordResetEmail = async (email: string, token: string) => {
-  const resetLink = `https://digital-service-dbqb1v755-shaik-yakoubs-projects.vercel.app/auth/forgot-password/new-password?token=${token}`;
+  const resetLink = `https://digital-service-dbqb1v755-shaik-yakoubs-projects.vercel.app/auth/new-password?token=${token}`;
 
   try {
     console.log(`Attempting to send password reset email to: ${email}`);

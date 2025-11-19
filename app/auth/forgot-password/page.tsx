@@ -1,41 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { reset } from "@/actions/reset";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [isPending, startTransition] = useTransition();
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setMessage("");
+    setMessage(null);
 
-    try {
-      const response = await fetch("/api/auth/forgot-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
+    startTransition(() => {
+      reset({ email }).then((data) => {
+        if (data.error) {
+          setMessage({ type: "error", text: data.error });
+        } else if (data.success) {
+          setMessage({ type: "success", text: data.success });
+        }
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage(
-          "If an account with that email exists, we've sent you a password reset link."
-        );
-      } else {
-        setMessage(data.error || "Something went wrong. Please try again.");
-      }
-    } catch {
-      setMessage("Network error. Please check your connection and try again.");
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
 
   return (
@@ -45,8 +31,14 @@ export default function ForgotPasswordPage() {
           <h1 className="text-2xl font-bold text-center">Forgot Password</h1>
 
           {message && (
-            <div className="rounded border border-blue-200 bg-blue-50 p-3 text-sm text-blue-600">
-              {message}
+            <div
+              className={`rounded border p-3 text-sm ${
+                message.type === "success"
+                  ? "border-green-200 bg-green-50 text-green-600"
+                  : "border-red-200 bg-red-50 text-red-600"
+              }`}
+            >
+              {message.text}
             </div>
           )}
 
@@ -60,16 +52,16 @@ export default function ForgotPasswordPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                disabled={isLoading}
+                disabled={isPending}
               />
             </label>
 
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isPending}
               className="rounded bg-black p-2 text-white hover:bg-gray-800 disabled:opacity-50"
             >
-              {isLoading ? "Sending..." : "Send Reset Link"}
+              {isPending ? "Sending..." : "Send Reset Link"}
             </button>
           </form>
 
