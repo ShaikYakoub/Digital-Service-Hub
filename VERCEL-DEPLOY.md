@@ -7,7 +7,7 @@ Make sure to add these environment variables in your Vercel project settings:
 ### Database
 ```
 DATABASE_URL=your_postgres_connection_string
-```
+``
 
 ### Authentication
 ```
