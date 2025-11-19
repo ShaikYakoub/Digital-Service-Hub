@@ -116,7 +116,9 @@ export default async function LearnChapterPage({
                   <div className="text-center text-white">
                     <BookOpen className="w-16 h-16 mx-auto mb-4" />
                     <h3 className="text-xl font-bold mb-2">Premium Content</h3>
-                    <p className="text-lg mb-4">Buy this course to unlock this chapter</p>
+                    <p className="text-lg mb-4">
+                      Buy this course to unlock this chapter
+                    </p>
                     <Link
                       href={`/learn/${course.id}`}
                       className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
@@ -137,12 +139,20 @@ export default async function LearnChapterPage({
               <div className="relative mt-4 p-4 border rounded-md bg-white overflow-hidden">
                 <div className="absolute inset-0 bg-gray-900 bg-opacity-10 backdrop-blur-sm flex items-center justify-center z-10">
                   <div className="text-center">
-                    <h3 className="text-lg font-bold text-gray-700 mb-2">Chapter Description</h3>
-                    <p className="text-gray-600">Purchase the course to view the full description</p>
+                    <h3 className="text-lg font-bold text-gray-700 mb-2">
+                      Chapter Description
+                    </h3>
+                    <p className="text-gray-600">
+                      Purchase the course to view the full description
+                    </p>
                   </div>
                 </div>
-                <h2 className="text-xl font-semibold mb-2 opacity-50">Description</h2>
-                <p className="opacity-50">{chapter.description || "No description available."}</p>
+                <h2 className="text-xl font-semibold mb-2 opacity-50">
+                  Description
+                </h2>
+                <p className="opacity-50">
+                  {chapter.description || "No description available."}
+                </p>
               </div>
             </div>
           )}
@@ -153,7 +163,10 @@ export default async function LearnChapterPage({
       <div className="md:hidden min-h-screen bg-gray-50">
         {/* Back Button */}
         <div className="px-4 py-3 border-b bg-white">
-          <Link href="/browse" className="flex items-center text-sm text-gray-600 hover:text-gray-900">
+          <Link
+            href="/browse"
+            className="flex items-center text-sm text-gray-600 hover:text-gray-900"
+          >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Courses
           </Link>
@@ -187,7 +200,9 @@ export default async function LearnChapterPage({
                 <div className="text-center text-white">
                   <BookOpen className="w-12 h-12 mx-auto mb-2" />
                   <h3 className="text-lg font-bold mb-2">Premium Content</h3>
-                  <p className="text-sm mb-3">Buy this course to unlock this chapter</p>
+                  <p className="text-sm mb-3">
+                    Buy this course to unlock this chapter
+                  </p>
                   <Link
                     href={`/learn/${course.id}`}
                     className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors"
@@ -230,18 +245,28 @@ export default async function LearnChapterPage({
           {hasAccess ? (
             <div className="bg-white rounded-lg p-4 border">
               <h2 className="text-lg font-semibold mb-3">Description</h2>
-              <p className="text-gray-700">{chapter.description || "No description available."}</p>
+              <p className="text-gray-700">
+                {chapter.description || "No description available."}
+              </p>
             </div>
           ) : (
             <div className="relative bg-white rounded-lg p-4 border overflow-hidden">
               <div className="absolute inset-0 bg-gray-900 bg-opacity-10 backdrop-blur-sm flex items-center justify-center z-10">
                 <div className="text-center">
-                  <h3 className="text-sm font-bold text-gray-700 mb-1">Chapter Description</h3>
-                  <p className="text-xs text-gray-600">Purchase the course to view</p>
+                  <h3 className="text-sm font-bold text-gray-700 mb-1">
+                    Chapter Description
+                  </h3>
+                  <p className="text-xs text-gray-600">
+                    Purchase the course to view
+                  </p>
                 </div>
               </div>
-              <h2 className="text-lg font-semibold mb-3 opacity-50">Description</h2>
-              <p className="text-gray-700 opacity-50">{chapter.description || "No description available."}</p>
+              <h2 className="text-lg font-semibold mb-3 opacity-50">
+                Description
+              </h2>
+              <p className="text-gray-700 opacity-50">
+                {chapter.description || "No description available."}
+              </p>
             </div>
           )}
         </div>

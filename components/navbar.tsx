@@ -127,9 +127,9 @@ export function Navbar() {
                       href="/browse"
                       onClick={() => setMobileMenuOpen(false)}
                       className={`block px-4 py-2 text-sm font-medium transition-colors ${
-                        pathname === '/browse'
-                          ? 'text-blue-600 bg-blue-50'
-                          : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                        pathname === "/browse"
+                          ? "text-blue-600 bg-blue-50"
+                          : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                       }`}
                     >
                       Browse Courses
@@ -138,9 +138,9 @@ export function Navbar() {
                       href="/profile"
                       onClick={() => setMobileMenuOpen(false)}
                       className={`block px-4 py-2 text-sm font-medium transition-colors ${
-                        pathname === '/profile'
-                          ? 'text-blue-600 bg-blue-50'
-                          : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                        pathname === "/profile"
+                          ? "text-blue-600 bg-blue-50"
+                          : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                       }`}
                     >
                       Profile
@@ -152,9 +152,9 @@ export function Navbar() {
                     href="/admin/courses"
                     onClick={() => setMobileMenuOpen(false)}
                     className={`block px-4 py-2 text-sm font-medium transition-colors ${
-                      pathname === '/admin/courses'
-                        ? 'text-blue-600 bg-blue-50'
-                        : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                      pathname === "/admin/courses"
+                        ? "text-blue-600 bg-blue-50"
+                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                     }`}
                   >
                     Manage Courses
@@ -180,15 +180,18 @@ export function Navbar() {
                   href="/browse"
                   onClick={() => setMobileMenuOpen(false)}
                   className={`block px-4 py-2 text-sm font-medium transition-colors ${
-                    pathname === '/browse'
-                      ? 'text-blue-600 bg-blue-50'
-                      : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                    pathname === "/browse"
+                      ? "text-blue-600 bg-blue-50"
+                      : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                   }`}
                 >
                   Browse Courses
                 </Link>
                 <div className="px-4 pt-2">
-                  <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
+                  <Link
+                    href="/auth/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
                     <Button size="sm" className="w-full">
                       Login
                     </Button>

@@ -181,11 +181,13 @@ export default async function AdminDashboard() {
                         <span className="text-xs text-gray-500">
                           {course._count.purchases} sales
                         </span>
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                          course.isPublished
-                            ? "bg-green-100 text-green-800"
-                            : "bg-yellow-100 text-yellow-800"
-                        }`}>
+                        <span
+                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                            course.isPublished
+                              ? "bg-green-100 text-green-800"
+                              : "bg-yellow-100 text-yellow-800"
+                          }`}
+                        >
                           {course.isPublished ? "Published" : "Draft"}
                         </span>
                       </div>

@@ -39,7 +39,9 @@ export default function ResetPage() {
         <h2 className="mb-6 text-center text-2xl font-bold">Forgot Password</h2>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
             <input
               {...form.register("email")}
               disabled={isPending}
@@ -49,8 +51,16 @@ export default function ResetPage() {
             />
           </div>
 
-          {error && <div className="rounded-md bg-red-50 p-3 text-sm text-red-500">{error}</div>}
-          {success && <div className="rounded-md bg-emerald-50 p-3 text-sm text-emerald-500">{success}</div>}
+          {error && (
+            <div className="rounded-md bg-red-50 p-3 text-sm text-red-500">
+              {error}
+            </div>
+          )}
+          {success && (
+            <div className="rounded-md bg-emerald-50 p-3 text-sm text-emerald-500">
+              {success}
+            </div>
+          )}
 
           <button
             type="submit"
