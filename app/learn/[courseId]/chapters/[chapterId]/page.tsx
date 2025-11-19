@@ -55,12 +55,9 @@ export default async function LearnChapterPage({
     <div className="flex h-screen text-black">
       {/* Sidebar: List of all chapters */}
       <div className="w-80 flex-shrink-0 bg-gray-100 p-6 overflow-y-auto">
-        <Link
-          href={`/learn/${course.id}`}
-          className="flex items-center text-sm mb-4"
-        >
+        <Link href="/browse" className="flex items-center text-sm mb-4">
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Course
+          Back to Courses
         </Link>
         <h2 className="text-xl font-bold mb-4">{course.title}</h2>
         <nav className="flex flex-col gap-2">

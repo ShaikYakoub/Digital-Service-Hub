@@ -142,7 +142,12 @@ export const CourseCard = ({
               </Button>
             </div>
           ) : isPaid ? (
-            <Button className="w-full">Login to Purchase</Button>
+            <Button
+              className="w-full"
+              onClick={() => router.push("/auth/login")}
+            >
+              Login to Purchase
+            </Button>
           ) : (
             <Button className="w-full">Start Learning</Button>
           )}

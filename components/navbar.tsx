@@ -43,7 +43,7 @@ export function Navbar() {
               <span className="hidden sm:inline text-lg font-bold text-gray-900">
                 Digital Service Hub
               </span>
-              <span className="sm:hidden text-lg font-bold text-gray-900">
+              <span className="sm:hidden text-base font-bold text-gray-900">
                 DSH
               </span>
             </Link>

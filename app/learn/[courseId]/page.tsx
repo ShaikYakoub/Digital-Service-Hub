@@ -14,10 +14,6 @@ export default async function LearnPage({
   const userId = session?.user?.id;
   const { courseId } = await params;
 
-  if (!userId) {
-    return <div>Please log in to view this course.</div>;
-  }
-
   const course = await db.course.findUnique({
     where: {
       id: courseId,
@@ -38,18 +34,23 @@ export default async function LearnPage({
     return <div>Course not found.</div>;
   }
 
-  // const purchase = await db.purchase.findUnique({
-  //   where: {
-  //     userId_courseId: {
-  //       userId,
-  //       courseId: params.courseId,
-  //     },
-  //   },
-  // });
+  const isFree = !course.price || course.price === 0;
+  const isPurchased = userId
+    ? await db.purchase.findUnique({
+        where: {
+          userId_courseId: {
+            userId,
+            courseId,
+          },
+        },
+      })
+    : false;
 
-  // if (!purchase) {
-  //   return <div>You have not purchased this course.</div>;
-  // }
+  const canAccess = userId && (isFree || isPurchased);
+
+  if (!canAccess && !isFree) {
+    return <div>Please log in to view this course.</div>;
+  }
 
   const firstChapter = course.chapters[0];
   if (!firstChapter) {
@@ -59,9 +60,13 @@ export default async function LearnPage({
   return (
     <div>
       <h1>{course.title}</h1>
-      <Link href={`/learn/${course.id}/chapters/${firstChapter.id}`}>
-        Go to first chapter
-      </Link>
+      {canAccess ? (
+        <Link href={`/learn/${course.id}/chapters/${firstChapter.id}`}>
+          Go to first chapter
+        </Link>
+      ) : (
+        <div>Please log in to start learning this free course.</div>
+      )}
     </div>
   );
 }
