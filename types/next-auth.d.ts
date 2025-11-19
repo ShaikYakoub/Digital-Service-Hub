@@ -1,17 +1,16 @@
-import { Role } from "@/lib/generated/client"
 import NextAuth, { DefaultSession } from "next-auth"
 
 declare module "next-auth" {
   interface Session {
     user: {
       id: string
-      role: Role
+      role: string
     } & DefaultSession["user"]
   }
 
   interface User {
     id: string
-    role: Role
+    role: string
     email?: string | null
     name?: string | null
   }

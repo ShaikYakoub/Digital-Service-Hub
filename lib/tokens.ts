@@ -1,23 +1,38 @@
 import { v4 as uuidv4 } from "uuid";
-import { db } from "@/lib/db";
+import { db } from "@/lib/db"; // Your existing prisma client import
 
 export const generatePasswordResetToken = async (email: string) => {
   const token = uuidv4();
-  const expires = new Date(new Date().getTime() + 3600 * 1000); // 1 hour
+  const expires = new Date(new Date().getTime() + 3600 * 1000); // Expires in 1 hour
 
-  // Delete existing tokens for this email
-  await db.passwordResetToken.deleteMany({
-    where: { email },
+  const existingToken = await db.passwordResetToken.findFirst({
+    where: { email }
   });
 
-  // Create new token
+  if (existingToken) {
+    await db.passwordResetToken.delete({
+      where: { id: existingToken.id }
+    });
+  }
+
   const passwordResetToken = await db.passwordResetToken.create({
     data: {
       email,
       token,
-      expires,
-    },
+      expires
+    }
   });
 
   return passwordResetToken;
+};
+
+export const getPasswordResetTokenByToken = async (token: string) => {
+  try {
+    const passwordResetToken = await db.passwordResetToken.findUnique({
+      where: { token }
+    });
+    return passwordResetToken;
+  } catch {
+    return null;
+  }
 };
