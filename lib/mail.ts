@@ -6,7 +6,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
   const resetLink = `http://localhost:3000/auth/new-password?token=${token}`;
 
   await resend.emails.send({
-    from: "onboarding@resend.dev", // Change this to your verified domain later
+    from: "sheikyaqoo@gmail.com", // Change this to your verified domain later
     to: email,
     subject: "Reset your password",
     html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`
