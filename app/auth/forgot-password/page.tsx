@@ -13,11 +13,27 @@ export default function ForgotPasswordPage() {
     setIsLoading(true);
     setMessage("");
 
-    // For now, just show a message
-    setMessage(
-      "Password reset functionality is not implemented yet. Please contact support."
-    );
-    setIsLoading(false);
+    try {
+      const response = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage("If an account with that email exists, we've sent you a password reset link.");
+      } else {
+        setMessage(data.error || "Something went wrong. Please try again.");
+      }
+    } catch {
+      setMessage("Network error. Please check your connection and try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

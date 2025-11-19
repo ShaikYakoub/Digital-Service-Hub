@@ -10,6 +10,7 @@ import { BuyButton } from "./buy-button";
 // Simplified type for course cards that only need basic chapter info
 type CourseWithBasicChapters = {
   id: string;
+  userId: string;
   title: string;
   description: string | null;
   imageUrl: string | null;
@@ -46,6 +47,7 @@ export const CourseCard = ({
     : `/learn/${course.id}`;
 
   const isPaid = course.price && course.price > 0;
+  const isAuthor = userId === course.userId;
 
   const handleCardClick = () => {
     // Only navigate if user is logged in, or course is free, or course is purchased
@@ -124,7 +126,11 @@ export const CourseCard = ({
 
         {/* Action Buttons */}
         <div className="mt-3 space-y-2" onClick={(e) => e.stopPropagation()}>
-          {isPurchased ? (
+          {isAuthor ? (
+            <Button className="w-full" variant="outline">
+              Manage Course
+            </Button>
+          ) : isPurchased ? (
             <Button className="w-full" variant="outline">
               Continue Learning
             </Button>

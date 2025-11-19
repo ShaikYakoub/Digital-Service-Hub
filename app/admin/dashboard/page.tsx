@@ -71,10 +71,10 @@ export default async function AdminDashboard() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
-            Welcome Back, {session.user.name}!
+            Dashboard Overview
           </h1>
           <p className="text-gray-600 mt-2">
-            Here's what's happening with your courses
+            Manage your courses and view statistics
           </p>
         </div>
 
@@ -138,58 +138,68 @@ export default async function AdminDashboard() {
         </div>
 
         {/* Recent Courses */}
-        <div className="bg-white p-6 rounded-lg border shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">
-              Recent Courses
-            </h2>
-            <Link
-              href="/admin/courses"
-              className="text-sm text-blue-600 hover:text-blue-700"
-            >
-              View all →
-            </Link>
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="px-6 py-5 border-b border-gray-200">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-gray-900">
+                Recent Courses
+              </h2>
+              <Link
+                href="/admin/courses"
+                className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+              >
+                View all →
+              </Link>
+            </div>
           </div>
 
-          {recentCourses.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">
-              No courses yet. Create your first course to get started!
-            </p>
-          ) : (
-            <div className="space-y-4">
-              {recentCourses.map((course) => (
+          <div className="divide-y divide-gray-200">
+            {recentCourses.length === 0 ? (
+              <div className="px-6 py-12 text-center">
+                <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-500 text-sm">
+                  No courses yet. Create your first course to get started!
+                </p>
+              </div>
+            ) : (
+              recentCourses.map((course) => (
                 <Link
                   key={course.id}
                   href={`/admin/courses/${course.id}`}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                  className="block px-6 py-4 hover:bg-gray-50 transition-colors group"
                 >
-                  <div className="flex-1">
-                    <h3 className="font-medium text-gray-900">
-                      {course.title}
-                    </h3>
-                    <div className="flex items-center gap-4 mt-1 text-sm text-gray-500">
-                      <span>{course._count.chapters} chapters</span>
-                      <span>•</span>
-                      <span>{course._count.purchases} sales</span>
-                      <span>•</span>
-                      <span
-                        className={
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-sm font-medium text-gray-900 truncate group-hover:text-blue-600 transition-colors">
+                        {course.title}
+                      </h3>
+                      <div className="flex items-center gap-3 mt-1">
+                        <span className="text-xs text-gray-500">
+                          {course._count.chapters} chapters
+                        </span>
+                        <span className="text-xs text-gray-500">•</span>
+                        <span className="text-xs text-gray-500">
+                          {course._count.purchases} sales
+                        </span>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                           course.isPublished
-                            ? "text-green-600"
-                            : "text-orange-600"
-                        }
-                      >
-                        {course.isPublished ? "Published" : "Draft"}
+                            ? "bg-green-100 text-green-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }`}>
+                          {course.isPublished ? "Published" : "Draft"}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="ml-4 flex-shrink-0">
+                      <span className="text-sm font-semibold text-gray-900">
+                        ₹{course.price || 0}
                       </span>
                     </div>
                   </div>
-                  <div className="text-lg font-bold text-gray-900">
-                    ₹{course.price || 0}
-                  </div>
                 </Link>
-              ))}
-            </div>
-          )}
+              ))
+            )}
+          </div>
         </div>
 
         {/* Quick Actions */}

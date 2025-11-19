@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSession, signOut } from "next-auth/react";
@@ -10,11 +11,12 @@ import { useSession, signOut } from "next-auth/react";
 export function Navbar() {
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const isAdmin = session?.user?.role === "ADMIN";
 
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: "/auth/login", redirect: true });
+    await signOut({ callbackUrl: "/", redirect: true });
   };
 
   return (
@@ -43,8 +45,8 @@ export function Navbar() {
               <span className="hidden sm:inline text-lg font-bold text-gray-900">
                 Digital Service Hub
               </span>
-              <span className="sm:hidden text-base font-bold text-gray-900">
-                DSH
+              <span className="sm:hidden text-lg font-bold text-gray-900">
+                Digital Service Hub
               </span>
             </Link>
           </div>
@@ -111,37 +113,37 @@ export function Navbar() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 space-y-2 border-t">
+          <div className="md:hidden py-4 space-y-2 border-t bg-white">
             {session?.user ? (
               <>
-                <div className="px-2 py-2 text-sm text-gray-700 border-b">
-                  {session.user.name || session.user.email}
+                <div className="px-4 py-3 bg-gray-50 border-b">
+                  <p className="text-sm font-medium text-gray-900">
+                    Welcome, {session.user.name || session.user.email}!
+                  </p>
                 </div>
                 {!isAdmin && (
                   <>
                     <Link
                       href="/browse"
                       onClick={() => setMobileMenuOpen(false)}
+                      className={`block px-4 py-2 text-sm font-medium transition-colors ${
+                        pathname === '/browse'
+                          ? 'text-blue-600 bg-blue-50'
+                          : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                      }`}
                     >
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="w-full justify-start"
-                      >
-                        Browse Courses
-                      </Button>
+                      Browse Courses
                     </Link>
                     <Link
                       href="/profile"
                       onClick={() => setMobileMenuOpen(false)}
+                      className={`block px-4 py-2 text-sm font-medium transition-colors ${
+                        pathname === '/profile'
+                          ? 'text-blue-600 bg-blue-50'
+                          : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                      }`}
                     >
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="w-full justify-start"
-                      >
-                        Profile
-                      </Button>
+                      Profile
                     </Link>
                   </>
                 )}
@@ -149,47 +151,49 @@ export function Navbar() {
                   <Link
                     href="/admin/courses"
                     onClick={() => setMobileMenuOpen(false)}
+                    className={`block px-4 py-2 text-sm font-medium transition-colors ${
+                      pathname === '/admin/courses'
+                        ? 'text-blue-600 bg-blue-50'
+                        : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                    }`}
                   >
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full justify-start"
-                    >
-                      Manage Courses
-                    </Button>
+                    Manage Courses
                   </Link>
                 )}
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full justify-start"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    handleSignOut();
-                  }}
-                >
-                  Logout
-                </Button>
+                <div className="px-4 pt-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full justify-start hover:bg-gray-50"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handleSignOut();
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </div>
               </>
             ) : (
               <>
-                <Link href="/browse" onClick={() => setMobileMenuOpen(false)}>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="w-full justify-start"
-                  >
-                    Browse Courses
-                  </Button>
-                </Link>
                 <Link
-                  href="/auth/login"
+                  href="/browse"
                   onClick={() => setMobileMenuOpen(false)}
+                  className={`block px-4 py-2 text-sm font-medium transition-colors ${
+                    pathname === '/browse'
+                      ? 'text-blue-600 bg-blue-50'
+                      : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
                 >
-                  <Button size="sm" className="w-full">
-                    Login
-                  </Button>
+                  Browse Courses
                 </Link>
+                <div className="px-4 pt-2">
+                  <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
+                    <Button size="sm" className="w-full">
+                      Login
+                    </Button>
+                  </Link>
+                </div>
               </>
             )}
           </div>

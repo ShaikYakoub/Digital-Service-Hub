@@ -5,6 +5,7 @@ import { BookOpen } from "lucide-react";
 
 type CourseWithBasicChapters = {
   id: string;
+  userId: string;
   title: string;
   description: string | null;
   imageUrl: string | null;
